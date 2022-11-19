@@ -1,4 +1,4 @@
-# Redis cache with Spring-Boot 
+# Datadog Redis cache with Spring-Boot on Docker-compose
 
 This repo sample spring-boot project to demonstrate redis cache with spring-boot & Datadog Java APM and used the Datadog Java APM TraceInterceptor to ignore the Redis Resource for "EXISTS".
 
