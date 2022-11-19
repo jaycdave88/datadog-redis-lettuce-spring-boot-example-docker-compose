@@ -41,7 +41,7 @@ docker-compose up --build
     with the raw body of: 
     ```
     {
-    "email":"user@gmail.com"
+       "email":"user@gmail.com"
     }
     ```
 ### Query the user
