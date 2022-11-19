@@ -1,0 +1,39 @@
+version: '3'
+services:
+  app:
+    container_name: spring-redis
+    image: spring-redis:v1
+    build: .
+    links:
+      - redis
+    ports:
+      - "8080:8080"
+    volumes:
+      - ~/docker/redis:/redis-service/logs
+    environment:
+      DD_AGENT_HOST: datadog-agent
+    depends_on:
+      - datadog-agent      
+  datadog-agent:
+    image: "datadog/agent:latest"
+    environment:
+      DD_API_KEY: $DD_API_KEY
+      DD_APM_ENABLED: "true"
+      DD_APM_NON_LOCAL_TRAFFIC: "true"
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+  redis:
+    container_name: redis
+    image: redis:v1
+    build: ./redis
+    hostname: redis
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "redis", "service": "redis"}]'
+    ports:
+      - "6379:6379"
+    depends_on:
+      - datadog-agent      
